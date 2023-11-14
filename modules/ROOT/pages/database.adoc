@@ -1,0 +1,261 @@
+= Petzen Church Records Database
+
+This is a rough draft of a SQL database that will be used to capture all recorded events in the three volumes of 
+the Petzen Kirchenbücher and their associated facts.
+
+A citation records one of more events. Events include:
+
+* births (which usually includes baptism data)
+* baptisms (which usually includes birth data)
+* confirmations
+* marriages
+* deaths/burials
+
+The events occur on a specific date and reference the citation. For example, a baptism typcially records two events:
+the birth (date and time of day) and the baptism, a separate event that occurs a few days later. A birth is similiar: it
+also records the subsequent baptism.
+
+These events involve persons and relevant facts mentioned about them, pertinent details such as their:
+
+* Name. Often the spelling or order of given names differs slightly from event to event. This needs to be captured.
+  What is two surnames are mentioned for one individual without an explanation. This needs to be captured. What is Christine Eleornore later
+  appears as Leonore Christine with the same surname. Is it the same person? Better to record it and decide that later.
+* Legitimacy. Yep, that, too.
+* Residence at the time of the event
+* Spouse, if a marriage event.
+* Father and Mother
+* Baptismal sponsors.
+* etc.
+
+== Prospective Design
+
+Below are the prospective database tables along with a description of each of their atrribute's name and data type.
+
+The goal of this database is to provide documentation in the form ofa BGS-compliant citation that answers
+five questions regarding a source of information:
+
+* What is the source that I'm pulling information from?
+* Who (or What) created this source?
+* When was this source created?
+* Where is this source? Where was it viewed and where can others see it?
+* Wherein the source is the information of interest? On what page in the volume or in which image number, say, in
+  case of a set of online digitized images, does the information reside?
+
+The citations comply with the format described in  link:https://www.evidenceexplained.com/index.php/content/quicklesson-25-arks-pals-paths-waypoints-citing-online-providers-digital-images[QuickLesson 25: ARKs, PALs, Paths & Waypoints (Citing Online Providers of Digital Images)], by Elisabeth Shown Mills.
+They will follow the pattern (more than one is shown in the article) illustrated at the bottom of the article. This is the pattern or template 
+that will be used:
+
+```text
+"German Protestant Church Registers Portal Archion.de", Verzeichnis der
+Getauften und Konfirmierten der Kirchengemeinde Petzen, 1641-1784, Archion
+(http://www.archion.de/p/c362c408ee/: 30 October 2023), path: Niedersachsen:
+Niedersächsisches Landesarchiv > Kirchenbücher der Evangelisch-Lutherischen
+Landeskirche Schaumburg-Lippe > Petzen > Verzeichnis der Getauften und
+Konfirmierten 1641-1784, image 313 of 322
+```
+
+=== Tables and Their Relationships
+
+The relationships between tables should match the actual cardinality that the event implies. This would include capturing the fact that:
+
+* The relationship between events and citations is one-to-many. A documented cite may record more than one event. Why? Because baptism records usually also 
+  contain birth information and vice versa. In these case, the citation records two events.
+* The `persons` table will record only: 
+** the person's sex
+** their FamilySearch six-character identifier (if one exists)
+** the legitimacy of their birth, and finally
+** their surname.
+* `cited_persons` captures all the participants in an event and all the events that mention a given individual.
+  `cited_persons` represents the many-to-many relationship between `citations` and `persons_cited`. It links persons to events and events to persons.  
+* A person may (however unlikely) reside -- as mentioned in different events that occur on different dates -- at a different locality or dwelling number.
+  This is certainly true, for example, of a woman who marries and comes to live with her husband at their new address. Thus the relationship between
+  persons and residents is one-to-many.
+* A couple may have more than one child. The relationship between the `couples` table and the `children` table is thus one-to-many. A couple 
+  may or may not have children, and the children born to a couple may or may not be legitimate. 
+   
+
+```sql
+# -- TODO: Add unique constraints
+create database if not exists petzen DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+use petzen;
+# -- The church registers:
+# -- Their: 
+# -- 1. title
+# -- 2. citation path
+# -- 3. total number of images.
+create table if not exists church_registers (
+    id int auto_increment primary key,
+    title varchar(175) not null,
+    img_cnt int not null,
+    citation_path varchar(750) not null
+) engine=innodb;
+
+insert into church_registers (title, img_cnt, citation_path)
+ values
+        ('Verzeichnis der Getrauten und Gestorbenen 1641-1784',
+        239,
+       "Niedersachsen: Niedersächsisches Landesarchiv > Kirchenbücher der Evangelisch-Lutherischen Landeskirche Schaumburg-Lippe > Petzen > Verzeichnis der Getrauten und Gestobenen 1641-1784"  
+    ),
+    ( "Verzeichnis der Getauften und Konfirmierten 1641-1784",
+        322,
+       "Niedersachsen: Niedersächsisches Landesarchiv > Kirchenbücher der Evangelisch-Lutherischen Landeskirche Schaumburg-Lippe > Petzen > Verzeichnis der Getauften und Konfirmierten 1641-1784"  
+    ),
+    (
+        "Verzeichnis der Getauften, Konfirmierten, Getrauten und Gestorbenen 1785-1827",
+        357,
+       "Niedersachsen: Niedersächsisches Landesarchiv > Kirchenbücher der Evangelisch-Lutherischen Landeskirche Schaumburg-Lippe > Petzen > Verzeichnis der Getauften, Konfirmierten, Getrauten und Gestorbenen 1785-1827"
+    );
+
+# -- This is the citation of for one or more related events. The cited events list
+# -- persons, the principal or partical for whom the event occurs, and other participants.
+# -- It also contains pertinent facts about these persons: their residence, occupation, 
+# -- given and surname, etc. 
+# -- An event occurs. The persons in it are recorded, if don't already exist, in the persons
+# -- table, and other information about them in other related tables.
+create table if not exists citation (
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    img_no INT NOT NULL,
+    archion_url VARCHAR(120) NOT NULL,
+    register_id INT NOT NULL,
+    foreign key(register_id) references church_registers(id)
+) engine=INNODB;
+
+create table if not exists life_events (
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    date DATE NOT NULL,
+    type ENUM(
+        'birth',
+        'baptism',
+        'marriage',
+        'death',
+        'burial'
+    ) NOT NULL,
+    cid INT NOT NULL,
+    foreign key(cid) references citation(id)
+) engine=INNODB;
+
+# --
+#-- fsid = FamilySearch Idenifier
+# -- assumes the person has only one surname spelling, but can have
+# -- Was their birth legitimate, illegitimate or unknown, say, do to hard to 
+# -- read gothic script.
+# -- alternate given names -- at leasst the order or spelling of the given names
+# -- legit = legitimate birht: y = yes, n = no, u = uncertain.
+# -- sex_order -- the, say, 2nd son or 1st daugther.
+create table if not exists persons (
+    id int AUTO_INCREMENT PRIMARY KEY,
+    fsid char(8) not null,
+    birth_order int not null,
+    sex_order int not null,
+    sex ENUM('m', 'f') NOT NULL,
+    legit ENUM('y', 'n','u'),
+    surname varchar(25) NOT NULL,
+    unique (fsid)
+) engine=INNODB;
+
+# -- Eventually, we don't know the father or the mother or either.
+# -- These are those two "Unknown" persons.
+insert into persons (fsid, birth_order, sex_order, sex, legit, surname) values
+        ('0000-001', 0, 0, 'm', "y", "Unknown father"),
+        ('0000-002', 0, 0, 'f', "y", "Unknown mother");
+# --
+# -- a cited_event may reference more than one person and a person
+# -- may be cited more then once
+
+create table if not exists persons_cited (
+    pid INT NOT NULL,
+    eid INT NOT NULL,
+    foreign key (pid) references persons(id),
+    foreign key (eid) references life_events(id)
+) engine=INNODB;
+
+# -- persons residences over time. The date of when they live
+# -- there is recorded in the life_events tables
+create table if not exists residences (
+    id int AUTO_INCREMENT PRIMARY KEY,
+    pid int NOT NULL,
+    eid int NOT NULL,
+    unique (pid, eid),
+    locality VARCHAR(25) NOT NULL,
+    num int NOT NULL,
+    FOREIGN KEY (pid) references persons(id),
+    FOREIGN KEY (eid) references life_events(id)
+) engine=INNODB;
+
+# -- Job names with an English definition
+create table if not exists job_names (
+    id int AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(17) NOT NULL,
+    defn VARCHAR(75) NOT NULL
+) engine=INNODB;
+
+
+INSERT INTO `job_names` (`id`, `name`, `defn`) VALUES
+(1, 'Canonier', 'canoneer;gunner;artillery gunner'),
+(2, 'Einlieger', 'free agricultural laborer'),
+(3, 'Taglöhner', 'day laborer (one who works small jobs paid by the day)'),
+(4, 'Leibzüchter', 'person on life estate'),
+(5, 'unknown', 'none'),
+(6, 'Küster', 'sexton, parish clerk'),
+(7, 'Colon', 'also Kolon; settler; farmer (of a crop farm with hereditary title)'),
+(8, 'Pfarrer', 'pastor; priest'),
+(9, 'Schuster', 'cobbler; shoemaker'),
+(10, 'Schumacher', 'cobbler; shoemaker'),
+(11, 'Schüßler', 'bowlmaker');
+
+
+# -- Jobs held, occupations had, by the person. And the event
+# -- that mentions the job description.
+create table if not exists jobs_held (
+    id int AUTO_INCREMENT PRIMARY KEY,
+    jib int NOT NULL,
+    pid int NOT NULL,
+    eid int NOT NULL,
+    unique (jib, pid),
+    unique (pid, eid),
+    foreign key (jib) references job_names(id),
+    foreign key (pid) references persons(id),
+    foreign key (eid) references life_events(id)
+) engine=INNODB;
+
+# -- We use couples rather than parents because not all couples 
+# -- become parents. And not all parents are married when they
+# -- have children. So couples allows us to model those who are
+# -- both married and unmarried and who may or may not have
+# -- had children born in or out of wedlock.
+create table if not exists couples (
+    id int AUTO_INCREMENT PRIMARY KEY,
+    mid int NOT NULL,
+    wid int NOT NULL,
+    unique(mid, wid),
+    foreign key (mid) references persons(id),
+    foreign key (wid) references persons(id)
+) engine=INNODB;
+# --
+# -- All children born to couples (married or unmarried).
+# -- Not sure if the legitamate flag should go here. 
+create table if not exists children (
+    id int AUTO_INCREMENT PRIMARY KEY,
+    cid int not null,
+    foreign key (cid) references couples(id)
+) engine=INNODB;
+
+#-- Is this of use--maybe later on. For now, we will track
+# -- participants using the persons-cited table.
+# -- create table if not exists participants (
+# --  pid INT NOT NULL,
+# --  eid INT NOT NULL,
+# --  is_principal BOOLEAN NOT NULL,
+# --     foreign key (pid) references persons(id),
+# --     foreign key (eid) references event(id)
+# --  );
+#-- Baptismal sponsors
+#-- evid - baptism event
+#-- pid person id
+create table if not exists sponsors (
+    eid INT NOT NULL,
+    pid INT NOT NULL,
+    foreign key (eid) references life_events(id),
+    foreign key (pid) references persons(id)
+) engine=INNODB;
+```

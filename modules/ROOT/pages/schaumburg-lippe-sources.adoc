@@ -1,0 +1,35 @@
+= Genealogical Sources of the Lower Saxony State Archive
+
+The Niedersächishes Landesarchiv has a list of genealogical sources. The 
+link:file:///home/kurt/Downloads/NLA_HA_Genealogische_Quellen-1.pdf[Genealogical Sources] in the Niedersächishes Landesarchiv is in German. 
+A translation is forthcoming.
+
+== Prospective Schaumburg Genelogy Sources
+
+This table was created by reading through the Familienforschung (Family Research) PDF links on the link:https://nla.niedersachsen.de/startseite/benutzung/nutzliche_hilfsmittel/nuetzliche-hilfsmittel-85897.html[Use Aids]
+webpage of the Niedersächisches Landesarchiv. While the PDF files are from each regional departments of the Niedersächisches Landesarchiv, they were
+culled for prospective sources of information for the Bleeke, Krückeberg and Weiland famailies.
+
+These are the PDF files explaining family research sources, such as church records, civil status and civil registers that are in the Lower
+Saxony regional archives:
+
+* link:https://nla.niedersachsen.de/download/102324[NLA BU Hilfsmittel Familienforschung]
+* link:https://nla.niedersachsen.de/download/198349[NLA HA Genealogische Quellen]
+* link:https://nla.niedersachsen.de/download/102333[NLA HA Inventare]
+* link:https://nla.niedersachsen.de/download/101352[NLA OL Leitfaden Familienforschung]
+* link:https://nla.niedersachsen.de/download/94801[NLA OS Inventar zur Hof- und Familienforschung]
+* link:https://nla.niedersachsen.de/download/101353[NLA OS Leitfaden Familienforschung]
+* link:https://nla.niedersachsen.de/download/182942[NLA ST Genealogische Quellen]
+* link:https://nla.niedersachsen.de/download/102340[NLA WO Flyer Steuer- und Schatzregister]
+
+This table is the start of a list derived by reading through PDFlinks above:
+
+[caption="Table :"]
+.Prospective Relevant Genealogical Sources in Schaumburg and Bückeburg
+[%autowidth]
+|===
+|Source
+
+|Zivilstandsregister der napoleon Okkupationszeit
+|===
+
