@@ -1,11 +1,28 @@
 = German Sources
 
+== Resource Links (currently unorganized)
 
+* link:https://www.compgen.de/[CompGen] Germany's Largest Association for Family Research
+* link:https://www.archivportal-d.de/?lang=en[Archivportal-D] sub-portal of the Deutsche Digitale Bibliothek +
++
+offers you a comprehensive search for archives and archival records in Germany. +
++
+With us you will find: +
++
+** A comprehensive **directory of German archival institutions**
+** Descriptive information on the records of our data partner archives
+** Digitized copies of records of individual data partner archives
+** Online Collections on the topics of the "Weimar Republic" and "Compensation for National Socialist Injustice"
 * Family Search link:https://www.familysearch.org/en/wiki/Baden-W%C3%BCrttemberg,_Germany_Genealogy[Baden-Württemberg, German Genealogy]
 * Genealogy.wiki page for link:https://wiki.genealogy.net/Menzingen_(Kraichtal)[Menzingen(Kraichtal)]
-* Archion.de Protestatn Church Portal Kirchenbücher for link:https://www.archion.de/de/suche?tx_archion_search_churchbooks%5Bcontroller%5D=Results&cHash=d0a0feb8887112ca38a9acaa8268a5cd[Menzingen]
+* Archion.de Protestant Kirchenbücher Portal link:https://www.archion.de/[Archion.de] has the digitalized MenzingenKirchenbücher(church registers)
 * link:https://wiki.genealogy.net/Menzingen,_OFB[Menzingen Ortsfamilienbuch] +
 +
 link:https://www.familysearch.org/en/help/helpcenter/lessons/ortsfamilienbucher-ortssippenbucher-introduction[Introduction to Orstfamilienfücher]
 * link:https://www.leo-bw.de/web/guest/themen/auswanderer[SW Germany Emigrants Database]
 * link:https://www.familysearch.org/en/wiki/Baden_Emigration_and_Immigration[Beden Emigration]
+
+== German Genealogy Researchers
+
+* link:https://berufsgenealogie.net/[Association of German-Speaking Professional Genealogist]
+* International Germanic Genelogical Partnership's link:https://iggp.org/cpage.php?pt=146[Professionnal Researchers page]
