@@ -1,0 +1,10 @@
+= German Sources
+
+
+* Family Search link:https://www.familysearch.org/en/wiki/Baden-W%C3%BCrttemberg,_Germany_Genealogy[Baden-Württemberg, German Genealogy]
+* Genealogy.wiki page for link:https://wiki.genealogy.net/Menzingen_(Kraichtal)[Menzingen(Kraichtal)]
+* Archion.de Protestatn Church Portal Kirchenbücher for link:https://www.archion.de/de/suche?tx_archion_search_churchbooks%5Bcontroller%5D=Results&cHash=d0a0feb8887112ca38a9acaa8268a5cd[Menzingen]
+* link:https://wiki.genealogy.net/Menzingen,_OFB[Menzingen Ortsfamilienbuch] +
++
+link:https://www.familysearch.org/en/help/helpcenter/lessons/ortsfamilienbucher-ortssippenbucher-introduction[Introduction to Orstfamilienfücher]
+
