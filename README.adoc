@@ -1,7 +1,0 @@
-= Menzingen Genealogy Project
-
-This is the https://docs.asciidoctor.org/asciidoc/latest/[Asciidoc] content for the gitlab pages
-website at  link:https://menzinen.familienkunde.com[menzingen.familienkunde.com]
-
-The website is an Antora documentation website built from the repo at
-https://github.com/kurt-krueckeberg/menzingen[https://github.com/kurt-krueckeberg/menzingen] that holds the Antora setup and playbook.
