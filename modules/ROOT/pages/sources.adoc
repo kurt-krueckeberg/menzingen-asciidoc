@@ -7,4 +7,4 @@
 * link:https://wiki.genealogy.net/Menzingen,_OFB[Menzingen Ortsfamilienbuch] +
 +
 link:https://www.familysearch.org/en/help/helpcenter/lessons/ortsfamilienbucher-ortssippenbucher-introduction[Introduction to Orstfamilienfücher]
-
+* link:https://www.leo-bw.de/web/guest/themen/auswanderer[SW Germany Emigrants Database]
